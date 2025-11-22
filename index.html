@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yc Doviz Premium</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --card-glass: rgba(255, 255, 255, 0.07);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            /* Hareketli Arka Plan - DAHA KOYU RENKLER */
+            background: linear-gradient(-45deg, #020617, #0f172a, #1e1b4b, #111827);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Rakamlar için özel font (Monospace) */
+        .font-mono-nums {
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.05em;
+        }
+
+        /* Kristal Cam Paneller */
+        .glass-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Tıklama Kalkanı (Link engelleme) */
+        .click-shield {
+            position: absolute;
+            inset: 0;
+            z-index: 50;
+            cursor: grab;
+        }
+        .click-shield:active { cursor: grabbing; }
+
+        /* Scrollbar Gizleme ama Kaydırmaya İzin Verme */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Fiyat Değişim Animasyonları */
+        @keyframes flashGreen {
+            0% { color: #4ade80; text-shadow: 0 0 20px rgba(74, 222, 128, 0.5); transform: scale(1.02); }
+            100% { color: #f1f5f9; text-shadow: none; transform: scale(1); }
+        }
+        @keyframes flashRed {
+            0% { color: #f87171; text-shadow: 0 0 20px rgba(248, 113, 113, 0.5); transform: scale(1.02); }
+            100% { color: #f1f5f9; text-shadow: none; transform: scale(1); }
+        }
+
+        .animate-up { animation: flashGreen 1.2s ease-out forwards; }
+        .animate-down { animation: flashRed 1.2s ease-out forwards; }
+
+        /* Header Logo Gradient */
+        .logo-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        }
+
+    </style>
+</head>
+<body class="flex flex-col p-4 md:p-6 gap-5 h-screen">
+
+    <!-- HEADER -->
+    <header class="flex justify-between items-center pb-2 border-b border-white/10 shrink-0">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl logo-gradient flex items-center justify-center shadow-lg shadow-blue-500/30 text-white font-bold text-lg">
+                YC
+            </div>
+            <div>
+                <h1 class="text-lg font-bold text-white tracking-wide">Yc Döviz <span class="font-light text-blue-300">Premium</span></h1>
+                <div class="flex items-center gap-2">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span class="text-xs text-slate-400 font-medium">Canlı Veri Akışı</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tarih & Saat -->
+        <div class="text-right hidden md:block">
+            <div id="clock" class="font-mono-nums text-3xl font-bold text-white tracking-tight">00:00:00</div>
+            <div id="date" class="text-xs text-blue-200 font-medium uppercase tracking-widest opacity-80">Yükleniyor...</div>
+        </div>
+    </header>
+
+    <!-- ANA İÇERİK -->
+    <main class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-5 overflow-hidden min-h-0">
+
+        <!-- SOL TARAF (Dövizler & Grafikler) - 8 Birim -->
+        <div class="lg:col-span-8 flex flex-col gap-5 h-full overflow-y-auto no-scrollbar pr-1">
+            
+            <!-- HERO SECTION (USD) -->
+            <div class="glass-card p-6 md:p-8 relative overflow-hidden group min-h-[240px] flex flex-col justify-center">
+                <!-- Arka Plan Işıltısı -->
+                <div class="absolute -right-20 -top-20 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl group-hover:bg-blue-600/30 transition-all duration-700"></div>
+                
+                <div class="relative z-10 flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/5 backdrop-blur-sm">
+                        <img src="https://flagcdn.com/w40/us.png" class="w-6 h-4 rounded shadow-sm" alt="USD">
+                        <span class="text-slate-200 font-bold text-sm tracking-wider">USD / TRY</span>
+                    </div>
+                    <span class="text-xs font-mono text-blue-300 bg-blue-900/30 px-2 py-1 rounded border border-blue-500/30">FOREX LIVE</span>
+                </div>
+
+                <div class="relative z-10 flex items-baseline gap-4">
+                    <span id="usd-try" class="font-mono-nums text-7xl md:text-8xl font-bold text-white tracking-tight drop-shadow-lg transition-all">--.--</span>
+                    <span class="text-slate-400 text-xl font-light">TL</span>
+                </div>
+
+                <div class="relative z-10 mt-4 flex gap-6 text-xs text-slate-400 font-medium">
+                    <span><i class="far fa-clock text-blue-400 mr-1"></i> <span id="last-update">--:--</span></span>
+                    <span><i class="fas fa-chart-line text-green-400 mr-1"></i> Anlık Piyasa</span>
+                </div>
+            </div>
+
+            <!-- MİNİ KARTLAR (Euro, Sterlin, Altın) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- Euro -->
+                <div class="glass-card p-5 flex flex-col justify-between h-32">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <img src="https://flagcdn.com/w40/eu.png" class="w-5 h-3.5 rounded shadow-sm" alt="EUR">
+                            <span class="text-slate-300 text-xs font-bold">EUR / TRY</span>
+                        </div>
+                        <i class="fas fa-euro-sign text-slate-600 text-sm"></i>
+                    </div>
+                    <div id="eur-try" class="font-mono-nums text-4xl font-bold text-white mt-2">--.--</div>
+                </div>
+
+                <!-- Sterlin -->
+                <div class="glass-card p-5 flex flex-col justify-between h-32">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <img src="https://flagcdn.com/w40/gb.png" class="w-5 h-3.5 rounded shadow-sm" alt="GBP">
+                            <span class="text-slate-300 text-xs font-bold">GBP / TRY</span>
+                        </div>
+                        <i class="fas fa-pound-sign text-slate-600 text-sm"></i>
+                    </div>
+                    <div id="gbp-try" class="font-mono-nums text-4xl font-bold text-white mt-2">--.--</div>
+                </div>
+
+                <!-- Gram Altın (Widget) -->
+                <div class="glass-card p-0 relative h-32 overflow-hidden">
+                    <div class="click-shield"></div> <!-- Tıklama Kalkanı -->
+                    <div class="tradingview-widget-container w-full h-full">
+                        <div class="tradingview-widget-container__widget w-full h-full"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                        {
+                        "symbol": "FX_IDC:XAUTRYG",
+                        "width": "100%",
+                        "height": "100%",
+                        "colorTheme": "dark",
+                        "isTransparent": true,
+                        "locale": "tr"
+                        }
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- GRAFİK ALANI (Kaydırılabilir) -->
+            <div class="glass-card p-5 flex-grow flex flex-col min-h-[300px]">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                        <i class="fas fa-poll text-blue-500"></i> Piyasa Analizleri
+                    </h3>
+                    <div class="px-2 py-1 bg-white/5 rounded text-[10px] text-slate-400 border border-white/5 flex items-center gap-1">
+                        <i class="fas fa-hand-pointer"></i> Kaydırılabilir
+                    </div>
+                </div>
+                
+                <div id="chart-scroll" class="flex overflow-x-auto gap-4 pb-2 h-full w-full no-scrollbar select-none cursor-grab">
+                    
+                    <!-- Grafik 1: USD -->
+                    <div class="min-w-[100%] md:min-w-[48%] h-full bg-black/20 rounded-xl border border-white/5 relative overflow-hidden">
+                        <div class="click-shield"></div>
+                        <div class="tradingview-widget-container w-full h-full">
+                            <div class="tradingview-widget-container__widget w-full h-full"></div>
+                            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                            {
+                            "symbol": "FX:USDTRY",
+                            "width": "100%",
+                            "height": "100%",
+                            "locale": "tr",
+                            "dateRange": "12M",
+                            "colorTheme": "dark",
+                            "isTransparent": true,
+                            "autosize": true,
+                            "largeChartUrl": "#"
+                            }
+                            </script>
+                        </div>
+                    </div>
+
+                    <!-- Grafik 2: EUR/USD -->
+                    <div class="min-w-[100%] md:min-w-[48%] h-full bg-black/20 rounded-xl border border-white/5 relative overflow-hidden">
+                        <div class="click-shield"></div>
+                        <div class="tradingview-widget-container w-full h-full">
+                            <div class="tradingview-widget-container__widget w-full h-full"></div>
+                            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                            {
+                            "symbol": "FX:EURUSD",
+                            "width": "100%",
+                            "height": "100%",
+                            "locale": "tr",
+                            "dateRange": "12M",
+                            "colorTheme": "dark",
+                            "isTransparent": true,
+                            "autosize": true,
+                            "largeChartUrl": "#"
+                            }
+                            </script>
+                        </div>
+                    </div>
+
+                    <!-- Grafik 3: ONS -->
+                    <div class="min-w-[100%] md:min-w-[48%] h-full bg-black/20 rounded-xl border border-white/5 relative overflow-hidden">
+                        <div class="click-shield"></div>
+                        <div class="tradingview-widget-container w-full h-full">
+                            <div class="tradingview-widget-container__widget w-full h-full"></div>
+                            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                            {
+                            "symbol": "OANDA:XAUUSD",
+                            "width": "100%",
+                            "height": "100%",
+                            "locale": "tr",
+                            "dateRange": "12M",
+                            "colorTheme": "dark",
+                            "isTransparent": true,
+                            "autosize": true,
+                            "largeChartUrl": "#"
+                            }
+                            </script>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SAĞ TARAF (Global Piyasalar) - 4 Birim -->
+        <div class="lg:col-span-4 h-full flex flex-col gap-4 overflow-y-auto no-scrollbar pb-2">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Küresel Piyasalar</h3>
+            
+            <!-- Liste Şeklinde Ferah Widgetlar -->
+            
+            <!-- Bitcoin -->
+            <div class="glass-card h-24 relative shrink-0 overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-6xl text-orange-500/10 group-hover:text-orange-500/20 transition-colors"><i class="fab fa-bitcoin"></i></div>
+                <div class="click-shield"></div>
+                <div class="tradingview-widget-container w-full h-full">
+                    <div class="tradingview-widget-container__widget w-full h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    { "symbol": "BINANCE:BTCUSDT", "width": "100%", "height": "100%", "colorTheme": "dark", "isTransparent": true, "locale": "tr" }
+                    </script>
+                </div>
+            </div>
+
+            <!-- Ethereum -->
+            <div class="glass-card h-24 relative shrink-0 overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-6xl text-indigo-500/10 group-hover:text-indigo-500/20 transition-colors"><i class="fab fa-ethereum"></i></div>
+                <div class="click-shield"></div>
+                <div class="tradingview-widget-container w-full h-full">
+                    <div class="tradingview-widget-container__widget w-full h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    { "symbol": "BINANCE:ETHUSDT", "width": "100%", "height": "100%", "colorTheme": "dark", "isTransparent": true, "locale": "tr" }
+                    </script>
+                </div>
+            </div>
+
+            <!-- Gümüş -->
+            <div class="glass-card h-24 relative shrink-0 overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-6xl text-gray-400/10 group-hover:text-gray-400/20 transition-colors"><i class="fas fa-gem"></i></div>
+                <div class="click-shield"></div>
+                <div class="tradingview-widget-container w-full h-full">
+                    <div class="tradingview-widget-container__widget w-full h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    { "symbol": "TVC:SILVER", "width": "100%", "height": "100%", "colorTheme": "dark", "isTransparent": true, "locale": "tr" }
+                    </script>
+                </div>
+            </div>
+
+            <!-- S&P 500 -->
+            <div class="glass-card h-24 relative shrink-0 overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-6xl text-blue-500/10 group-hover:text-blue-500/20 transition-colors"><i class="fas fa-chart-pie"></i></div>
+                <div class="click-shield"></div>
+                <div class="tradingview-widget-container w-full h-full">
+                    <div class="tradingview-widget-container__widget w-full h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    { "symbol": "FOREXCOM:SPXUSD", "width": "100%", "height": "100%", "colorTheme": "dark", "isTransparent": true, "locale": "tr" }
+                    </script>
+                </div>
+            </div>
+            
+            <!-- Petrol -->
+            <div class="glass-card h-24 relative shrink-0 overflow-hidden group">
+                <div class="absolute -right-6 -bottom-6 text-6xl text-red-500/10 group-hover:text-red-500/20 transition-colors"><i class="fas fa-oil-can"></i></div>
+                <div class="click-shield"></div>
+                <div class="tradingview-widget-container w-full h-full">
+                    <div class="tradingview-widget-container__widget w-full h-full"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    { "symbol": "TVC:UKOIL", "width": "100%", "height": "100%", "colorTheme": "dark", "isTransparent": true, "locale": "tr" }
+                    </script>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        const API_KEY = "fca_live_8zHZHKMWq0nBBqUkH99SJha7jSexYbLW92ifD4nE";
+        const BASE_URL = "https://api.freecurrencyapi.com/v1/latest";
+        const UPDATE_INTERVAL = 10000; 
+
+        const elUsdTry = document.getElementById('usd-try');
+        const elEurTry = document.getElementById('eur-try');
+        const elGbpTry = document.getElementById('gbp-try');
+        const elLastUpdate = document.getElementById('last-update');
+        const elClock = document.getElementById('clock');
+        const elDate = document.getElementById('date');
+
+        let previousRates = { USD: 0, EUR: 0, GBP: 0 };
+
+        // --- Scroll & Drag Logic ---
+        const scrollContainer = document.getElementById("chart-scroll");
+
+        scrollContainer.addEventListener("wheel", (evt) => {
+            if (evt.deltaY !== 0) { evt.preventDefault(); scrollContainer.scrollLeft += evt.deltaY; }
+        });
+
+        let isDown = false; let startX; let scrollLeft;
+        scrollContainer.addEventListener('mousedown', (e) => { isDown = true; scrollContainer.style.cursor = 'grabbing'; startX = e.pageX - scrollContainer.offsetLeft; scrollLeft = scrollContainer.scrollLeft; });
+        scrollContainer.addEventListener('mouseleave', () => { isDown = false; scrollContainer.style.cursor = 'grab'; });
+        scrollContainer.addEventListener('mouseup', () => { isDown = false; scrollContainer.style.cursor = 'grab'; });
+        scrollContainer.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const x = e.pageX - scrollContainer.offsetLeft; const walk = (x - startX) * 2; scrollContainer.scrollLeft = scrollLeft - walk; });
+
+        // --- Data Logic ---
+        function updateTime() {
+            const now = new Date();
+            elClock.innerText = now.toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            elDate.innerText = now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
+        }
+
+        function formatCurrency(value) { return value.toFixed(4); }
+
+        function animateValue(element, newValue, oldValue) {
+            element.classList.remove('animate-up', 'animate-down', 'text-white');
+            void element.offsetWidth; // Reset animation
+            
+            if (newValue > oldValue) {
+                element.classList.add('animate-up');
+            } else if (newValue < oldValue) {
+                element.classList.add('animate-down');
+            } else {
+                element.classList.add('text-white');
+            }
+        }
+
+        async function fetchRates() {
+            try {
+                const response = await fetch(`${BASE_URL}?apikey=${API_KEY}&currencies=TRY,EUR,GBP,USD`);
+                const result = await response.json();
+                const data = result.data;
+
+                const usdTry = data.TRY;
+                const eurTry = data.TRY / data.EUR;
+                const gbpTry = data.TRY / data.GBP;
+
+                animateValue(elUsdTry, usdTry, previousRates.USD);
+                elUsdTry.innerText = formatCurrency(usdTry);
+
+                animateValue(elEurTry, eurTry, previousRates.EUR);
+                elEurTry.innerText = formatCurrency(eurTry);
+
+                animateValue(elGbpTry, gbpTry, previousRates.GBP);
+                elGbpTry.innerText = formatCurrency(gbpTry);
+
+                previousRates = { USD: usdTry, EUR: eurTry, GBP: gbpTry };
+                
+                const now = new Date();
+                elLastUpdate.innerText = now.toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'});
+
+            } catch (error) {
+                console.error("Veri hatası:", error);
+            }
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+        fetchRates();
+        setInterval(fetchRates, UPDATE_INTERVAL);
+    </script>
+</body>
+</html>
