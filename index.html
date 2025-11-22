@@ -137,13 +137,10 @@
         </div>
     </header>
 
-    <!-- ANA İÇERİK 
-         Mobilde: Normal akış (scroll), Masaüstünde (lg): Sabit grid ve iç scroll
-    -->
+    <!-- ANA İÇERİK -->
     <main class="flex-grow grid grid-cols-1 lg:grid-cols-12 gap-5 min-h-0 lg:overflow-hidden">
 
         <!-- SOL TARAF (Dövizler & Grafikler) - 8 Birim -->
-        <!-- lg:overflow-y-auto -> Sadece masaüstünde iç scroll, mobilde sayfa ile akar -->
         <div class="lg:col-span-8 flex flex-col gap-5 lg:h-full lg:overflow-y-auto no-scrollbar lg:pr-1">
             
             <!-- HERO SECTION (USD) -->
@@ -160,8 +157,7 @@
                 </div>
 
                 <div class="relative z-10 flex items-baseline gap-2 md:gap-4">
-                    <!-- Font boyutu mobilde küçültüldü (text-5xl), masaüstünde büyük (md:text-8xl) -->
-                    <span id="usd-try" class="font-mono-nums text-5xl sm:text-6xl md:text-8xl font-bold text-white tracking-tight drop-shadow-lg transition-all">--.--</span>
+                    <span id="usd-try" class="font-mono-nums text-5xl sm:text-6xl md:text-8xl font-bold text-white tracking-tight drop-shadow-lg transition-all">--,--</span>
                     <span class="text-slate-400 text-lg md:text-xl font-light">TL</span>
                 </div>
 
@@ -172,7 +168,6 @@
             </div>
 
             <!-- MİNİ KARTLAR (Euro, Sterlin, Altın) -->
-            <!-- Mobilde tek sütun yerine sm ekranlarda 2 sütun yaparak alan kazanıyoruz -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 
                 <!-- Euro -->
@@ -184,7 +179,7 @@
                         </div>
                         <i class="fas fa-euro-sign text-slate-600 text-sm"></i>
                     </div>
-                    <div id="eur-try" class="font-mono-nums text-3xl md:text-4xl font-bold text-white mt-1 md:mt-2">--.--</div>
+                    <div id="eur-try" class="font-mono-nums text-3xl md:text-4xl font-bold text-white mt-1 md:mt-2">--,--</div>
                 </div>
 
                 <!-- Sterlin -->
@@ -196,13 +191,12 @@
                         </div>
                         <i class="fas fa-pound-sign text-slate-600 text-sm"></i>
                     </div>
-                    <div id="gbp-try" class="font-mono-nums text-3xl md:text-4xl font-bold text-white mt-1 md:mt-2">--.--</div>
+                    <div id="gbp-try" class="font-mono-nums text-3xl md:text-4xl font-bold text-white mt-1 md:mt-2">--,--</div>
                 </div>
 
                 <!-- Gram Altın (Widget) -->
-                <!-- sm:col-span-2 md:col-span-1 -> Mobilde (tablet modunda) geniş dursun, masaüstünde tekli -->
                 <div class="glass-card p-0 relative h-28 md:h-32 overflow-hidden sm:col-span-2 md:col-span-1">
-                    <div class="click-shield"></div> <!-- Tıklama Kalkanı -->
+                    <div class="click-shield"></div>
                     <div class="tradingview-widget-container w-full h-full">
                         <div class="tradingview-widget-container__widget w-full h-full"></div>
                         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
@@ -232,7 +226,6 @@
                 </div>
                 
                 <div id="chart-scroll" class="flex overflow-x-auto gap-4 pb-2 h-full w-full no-scrollbar select-none cursor-grab touch-pan-x">
-                    
                     <!-- Grafik 1: USD -->
                     <div class="min-w-[90%] md:min-w-[48%] h-full bg-black/20 rounded-xl border border-white/5 relative overflow-hidden shrink-0">
                         <div class="click-shield"></div>
@@ -301,11 +294,10 @@
 
         </div>
 
-        <!-- SAĞ TARAF (Global Piyasalar) - 4 Birim -->
+        <!-- SAĞ TARAF (Global Piyasalar ve Avrupa) - 4 Birim -->
         <div class="lg:col-span-4 flex flex-col gap-4 lg:h-full lg:overflow-y-auto no-scrollbar pb-2">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1 mt-4 lg:mt-0">Küresel Piyasalar</h3>
             
-            <!-- Mobilde Grid, Masaüstünde Liste -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
                 <!-- Bitcoin -->
                 <div class="glass-card h-24 relative shrink-0 overflow-hidden group">
@@ -368,6 +360,92 @@
                 </div>
             </div>
 
+            <!-- YENİ BÖLÜM: AVRUPA DÖVİZLERİ -->
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1 mt-2">Avrupa Piyasası</h3>
+            
+            <!-- Tek sütun (vertical stack) ve yatay hizalanmış içerik (flex-row) -->
+            <div class="flex flex-col gap-3">
+                <!-- CHF -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/ch.png" class="w-6 h-4 rounded shadow-sm" alt="CHF">
+                        <span class="text-xs text-slate-300 font-bold">CHF / TRY</span>
+                    </div>
+                    <div id="chf-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- SEK -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/se.png" class="w-6 h-4 rounded shadow-sm" alt="SEK">
+                        <span class="text-xs text-slate-300 font-bold">SEK / TRY</span>
+                    </div>
+                    <div id="sek-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- NOK -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/no.png" class="w-6 h-4 rounded shadow-sm" alt="NOK">
+                        <span class="text-xs text-slate-300 font-bold">NOK / TRY</span>
+                    </div>
+                    <div id="nok-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- DKK -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/dk.png" class="w-6 h-4 rounded shadow-sm" alt="DKK">
+                        <span class="text-xs text-slate-300 font-bold">DKK / TRY</span>
+                    </div>
+                    <div id="dkk-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- PLN -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/pl.png" class="w-6 h-4 rounded shadow-sm" alt="PLN">
+                        <span class="text-xs text-slate-300 font-bold">PLN / TRY</span>
+                    </div>
+                    <div id="pln-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- HUF -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/hu.png" class="w-6 h-4 rounded shadow-sm" alt="HUF">
+                        <span class="text-xs text-slate-300 font-bold">HUF / TRY</span>
+                    </div>
+                    <div id="huf-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- CZK -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/cz.png" class="w-6 h-4 rounded shadow-sm" alt="CZK">
+                        <span class="text-xs text-slate-300 font-bold">CZK / TRY</span>
+                    </div>
+                    <div id="czk-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- RON -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/ro.png" class="w-6 h-4 rounded shadow-sm" alt="RON">
+                        <span class="text-xs text-slate-300 font-bold">RON / TRY</span>
+                    </div>
+                    <div id="ron-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- BGN -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/bg.png" class="w-6 h-4 rounded shadow-sm" alt="BGN">
+                        <span class="text-xs text-slate-300 font-bold">BGN / TRY</span>
+                    </div>
+                    <div id="bgn-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+                <!-- ISK -->
+                <div class="glass-card px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="https://flagcdn.com/w40/is.png" class="w-6 h-4 rounded shadow-sm" alt="ISK">
+                        <span class="text-xs text-slate-300 font-bold">ISK / TRY</span>
+                    </div>
+                    <div id="isk-try" class="font-mono-nums text-sm font-bold text-white">--,--</div>
+                </div>
+            </div>
         </div>
 
     </main>
@@ -385,6 +463,20 @@
         const elClock = document.getElementById('clock');
         const elDate = document.getElementById('date');
 
+        // Avrupa Döviz Elemanları
+        const euroCurrencies = {
+            CHF: document.getElementById('chf-try'),
+            SEK: document.getElementById('sek-try'),
+            NOK: document.getElementById('nok-try'),
+            DKK: document.getElementById('dkk-try'),
+            PLN: document.getElementById('pln-try'),
+            HUF: document.getElementById('huf-try'),
+            CZK: document.getElementById('czk-try'),
+            RON: document.getElementById('ron-try'),
+            BGN: document.getElementById('bgn-try'),
+            ISK: document.getElementById('isk-try'),
+        };
+
         let previousRates = { USD: 0, EUR: 0, GBP: 0 };
 
         // --- Scroll & Drag Logic ---
@@ -400,22 +492,10 @@
         scrollContainer.addEventListener('mouseup', () => { isDown = false; scrollContainer.style.cursor = 'grab'; });
         scrollContainer.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const x = e.pageX - scrollContainer.offsetLeft; const walk = (x - startX) * 2; scrollContainer.scrollLeft = scrollLeft - walk; });
 
-        // Touch support for horizontal scroll container
-        scrollContainer.addEventListener('touchstart', (e) => {
-            isDown = true;
-            startX = e.touches[0].pageX - scrollContainer.offsetLeft;
-            scrollLeft = scrollContainer.scrollLeft;
-        });
-        scrollContainer.addEventListener('touchend', () => {
-            isDown = false;
-        });
-        scrollContainer.addEventListener('touchmove', (e) => {
-            if (!isDown) return;
-            // e.preventDefault(); // Removed to allow vertical page scroll when not swiping horizontally perfectly
-            const x = e.touches[0].pageX - scrollContainer.offsetLeft;
-            const walk = (x - startX) * 2;
-            scrollContainer.scrollLeft = scrollLeft - walk;
-        });
+        // Touch support
+        scrollContainer.addEventListener('touchstart', (e) => { isDown = true; startX = e.touches[0].pageX - scrollContainer.offsetLeft; scrollLeft = scrollContainer.scrollLeft; });
+        scrollContainer.addEventListener('touchend', () => { isDown = false; });
+        scrollContainer.addEventListener('touchmove', (e) => { if (!isDown) return; const x = e.touches[0].pageX - scrollContainer.offsetLeft; const walk = (x - startX) * 2; scrollContainer.scrollLeft = scrollLeft - walk; });
 
 
         // --- Data Logic ---
@@ -425,12 +505,20 @@
             elDate.innerText = now.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
         }
 
-        function formatCurrency(value) { return value.toFixed(4); }
+        // Format fonksiyonu GÜNCELLENDİ: Türk standardı (1.234,5678)
+        function formatCurrency(value) { 
+            return value.toLocaleString('tr-TR', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+        }
 
         function animateValue(element, newValue, oldValue) {
             element.classList.remove('animate-up', 'animate-down', 'text-white');
-            void element.offsetWidth; // Reset animation
+            void element.offsetWidth; 
             
+            if (!oldValue) {
+                element.classList.add('text-white');
+                return;
+            }
+
             if (newValue > oldValue) {
                 element.classList.add('animate-up');
             } else if (newValue < oldValue) {
@@ -442,11 +530,13 @@
 
         async function fetchRates() {
             try {
-                const response = await fetch(`${BASE_URL}?apikey=${API_KEY}&currencies=TRY,EUR,GBP,USD`);
+                const response = await fetch(`${BASE_URL}?apikey=${API_KEY}&currencies=TRY,EUR,GBP,USD,CHF,SEK,NOK,DKK,PLN,HUF,CZK,RON,BGN,ISK`);
                 const result = await response.json();
                 const data = result.data;
 
-                const usdTry = data.TRY;
+                const usdTry = data.TRY; // 1 USD = X TRY
+
+                // Ana Kurlar
                 const eurTry = data.TRY / data.EUR;
                 const gbpTry = data.TRY / data.GBP;
 
@@ -459,7 +549,22 @@
                 animateValue(elGbpTry, gbpTry, previousRates.GBP);
                 elGbpTry.innerText = formatCurrency(gbpTry);
 
-                previousRates = { USD: usdTry, EUR: eurTry, GBP: gbpTry };
+                previousRates.USD = usdTry;
+                previousRates.EUR = eurTry;
+                previousRates.GBP = gbpTry;
+
+                // Avrupa Kurları Döngüsü
+                for (const [code, element] of Object.entries(euroCurrencies)) {
+                    if (data[code]) {
+                        const rate = data.TRY / data[code]; 
+                        
+                        const prevRate = previousRates[code] || 0;
+                        animateValue(element, rate, prevRate);
+                        
+                        element.innerText = formatCurrency(rate);
+                        previousRates[code] = rate;
+                    }
+                }
                 
                 const now = new Date();
                 elLastUpdate.innerText = now.toLocaleTimeString('tr-TR', {hour: '2-digit', minute:'2-digit'});
